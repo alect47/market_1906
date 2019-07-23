@@ -1,3 +1,5 @@
+require 'pry'
+
 class Market
   attr_reader :name, :vendors
 
@@ -33,6 +35,23 @@ class Market
       end
     end
     hash
+  end
+
+  def sell(item, num)
+    if total_inventory[item] < num
+      false
+    else
+      vendors_that_sell(item).map do |ven|
+          if ven.inventory[item] > num
+            ven.inventory[item] -= num
+          else
+            a = ((ven.inventory[item] - num) * -1)
+            ven.inventory[item] -= ((ven.inventory[item] - num) + num)
+            num = a
+          end
+      end
+      true
+    end
   end
 
 end
